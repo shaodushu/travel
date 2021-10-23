@@ -1,23 +1,24 @@
 
 import { Status } from "https://deno.land/std@0.105.0/http/http_status.ts";
-import { Context } from "https://deno.land/x/oak@v9.0.0/context.ts";
 import { RouteParams, RouterContext } from "https://deno.land/x/oak@v9.0.0/router.ts";
 import { BadRequest, NotFound } from "../extend/helper.ts";
 import { FlightService } from "../service/flight.ts";
 
 const service = new FlightService();
 
+type ControllerType = RouterContext<RouteParams, Record<string, any>>
+
 export class FlightController {
-    async create(ctx: RouterContext<RouteParams, Record<string, any>>) {
+    async create(ctx: ControllerType) {
         if (!ctx.request.hasBody) {
             return BadRequest(ctx);
         }
         const { value } = await ctx.request.body();
-        const res = await service.create(value)
+        const body = await service.create(await value)
         ctx.response.status = Status.Accepted;
-        ctx.response.body = res
+        ctx.response.body = body
     }
-    async getOne(ctx: RouterContext<RouteParams, Record<string, any>>) {
+    async getOne(ctx: ControllerType) {
         if (!ctx.params.id) {
             return BadRequest(ctx)
         }
@@ -30,7 +31,7 @@ export class FlightController {
         }
         return NotFound(ctx)
     }
-    async getAll(ctx: Context) {
+    async getAll(ctx: ControllerType) {
         const res = await service.getAll()
         ctx.response.status = Status.OK;
         ctx.response.body = res

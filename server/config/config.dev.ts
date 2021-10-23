@@ -1,5 +1,5 @@
 import { Database, MySQLConnector } from "https://deno.land/x/denodb@v1.0.39/mod.ts";
-import { Flight } from "../app/models/Flight.ts";
+import { Flight } from "../app/models/flight.ts";
 
 export class DatabaseController {
     client!: Database;

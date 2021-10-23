@@ -1,22 +1,11 @@
 
-import { Flight, IFlight } from "../models/Flight.ts";
-import { BaseService } from "./base.ts";
+import { Flight, IFlight } from "../models/flight.ts";
 
-// [
-//     {
-//         departure: 'Paris',
-//         destination: 'Tokyo',
-//     },
-//     {
-//         departure: 'London',
-//         destination: 'San Francisco',
-//     },
-// ]
-export class FlightService implements BaseService<IFlight>{
+export class FlightService{
     create(values: IFlight[]) {
-        return Flight.create(values);
+        return Flight.create(values as any);
     }
-    getOne(id: number) {
+    getOne(id: string) {
         return Flight.find(id)
     }
     getAll() {
