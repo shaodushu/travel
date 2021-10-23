@@ -1,7 +1,7 @@
 import {
-    Application,
+    Application, etag,
 } from "https://deno.land/x/oak@v9.0.0/mod.ts";
-import { DatabaseController } from "./config/config.dev.ts";
+import DBInit from "./config/config.dev.ts";
 import router from './app/router.ts'
 import Middleware from "./app/middleware/index.ts";
 
@@ -11,12 +11,15 @@ const PORT = env.PORT || 3000;
 const HOST = env.HOST || '0.0.0.0';
 
 const app = new Application();
-// Logger
+
+await DBInit()
+
+app.use(etag.factory());
+
 app.use(Middleware.logger);
-// Error
+app.use(Middleware.timing);
 app.use(Middleware.error);
 
-await new DatabaseController().init();
 
 app.use(router.routes());
 app.use(router.allowedMethods());
