@@ -1,13 +1,19 @@
 import { Context, Status } from "https://deno.land/x/oak@v9.0.0/mod.ts";
 import { verify } from "https://deno.land/x/djwt@v2.4/mod.ts";
 
+const secretKey = await crypto.subtle.generateKey(
+    { name: "HMAC", hash: "SHA-256" },
+    true,
+    ["sign", "verify"],
+  );
+
 /**
  * Create a default configuration
  */
 export const JwtConfig = {
     header: "Authorization",
     schema: "Bearer",
-    secretKey: Deno.env.get("SECRET") as unknown as CryptoKey || null,
+    secretKey,
     expirationTime: 60000,
     type: "JWT",
     alg: "HS256",
