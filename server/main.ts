@@ -2,7 +2,6 @@ import {
     Application, etag,
 } from "https://deno.land/x/oak@v9.0.0/mod.ts";
 import "https://deno.land/x/dotenv@v3.0.0/load.ts";
-import DBInit from "./config/config.dev.ts";
 import router from './app/router.ts'
 import Middleware from "./app/middleware/index.ts";
 
@@ -12,8 +11,6 @@ const HOST = server.host;
 const PORT = server.port;
 
 const app = new Application();
-
-await DBInit()
 
 app.use(etag.factory());
 

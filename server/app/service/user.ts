@@ -1,8 +1,12 @@
 
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.2.4/mod.ts";
+import { database } from "../../config/config.dev.ts";
 import { User, IUser } from "../models/user.ts";
 
 export class UserService {
+    constructor() {
+        database.link([User])
+    }
     async create(values: IUser) {
         const password = await User.hashPassword(values.password);
         const user = {

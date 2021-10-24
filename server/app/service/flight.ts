@@ -1,7 +1,11 @@
 
+import { database } from "../../config/config.dev.ts";
 import { Flight, IFlight } from "../models/flight.ts";
 
-export class FlightService{
+export class FlightService {
+    constructor() {
+        database.link([Flight])
+    }
     create(values: IFlight[]) {
         return Flight.create(values as any);
     }
